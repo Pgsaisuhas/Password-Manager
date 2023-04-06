@@ -79,8 +79,7 @@ class Window(ctk.CTk):
                                    command=save)
         self.add_button.grid(row=3, columns=1, columnspan=3, sticky="w", pady=20)
         self.open_file_button = ctk.CTkButton(master=self.frame, text="Open", width=180, border_width=1,
-                                              border_color="white",
-                                         command=open_file)
+                                              border_color="white",command=open_file)
         self.open_file_button.grid(row=3, column=1, columnspan=3, sticky="e", pady=20)
         self.frame.pack()
 
