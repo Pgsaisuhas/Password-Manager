@@ -4,11 +4,26 @@ import random
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 
+class ToplevelWindow(ctk.CTkToplevel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.geometry("400x300")
+        text_edit = ctk.CTkTextbox(self, height=300, width=400)
+        text_edit.pack(expand=True)
+        text_edit.delete(1.0, tk.END)
+        with open(file="saved.txt", mode="r") as file_input:
+            text = file_input.read()
+            text_edit.insert(tk.END, text)
+        self.title(f"MY NOTEPAD: saved.txt")
+
+
+
 class Window(ctk.CTk):
     def __init__(self):
         super().__init__()
-
+        self.toplevel_window = None
         def generate_password():
+            self.password_entry.delete(0, tk.END)
             password = [
                 '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3',
                 '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F',
@@ -37,9 +52,6 @@ class Window(ctk.CTk):
                         data_file.write(f"{website} | {email} | {password}\n")
                         self.website_entry.delete(0, tk.END)
                         self.password_entry.delete(0, tk.END)
-
-        def open_file():
-            pass
 
         self.title("Password Manager")
         self.geometry("500x400")
@@ -79,9 +91,16 @@ class Window(ctk.CTk):
                                    command=save)
         self.add_button.grid(row=3, columns=1, columnspan=3, sticky="w", pady=20)
         self.open_file_button = ctk.CTkButton(master=self.frame, text="Open", width=180, border_width=1,
-                                              border_color="white",command=open_file)
+                                              border_color="white",command=self.open_toplevel)
         self.open_file_button.grid(row=3, column=1, columnspan=3, sticky="e", pady=20)
         self.frame.pack()
+
+    def open_toplevel(self):
+        if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+            self.toplevel_window = ToplevelWindow(self)  # create window if its None or destroyed
+        else:
+            self.toplevel_window.focus()  # if window exists focus it
+
 
 if __name__ == "__main__":
     app = Window()
