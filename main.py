@@ -15,6 +15,7 @@ class ToplevelWindow(ctk.CTkToplevel):
             text = file_input.read()
             text_edit.insert(tk.END, text)
         self.title(f"MY NOTEPAD: saved.txt")
+        self.after(100, self.lift)
 
 
 
